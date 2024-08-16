@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Form</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./libs/sscjs@latest/dist/ssc.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./js/main.js"></script>    
+</head>
+<body>
+    <div class="form-container">
+        <form>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username">
+            </div>
+
+            <div class="form-group">
+                <label for="token-symbol" class="token-label">Select Token:</label>
+                <select id="token-symbol" name="token-symbol">                    
+                    <option value="BOT">BOT Token</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="token-balance">Token Balance</label>
+                <input type="text" id="token-balance" name="token-balance" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="bet-amount">Bet Token Amount</label>
+                <input type="text" id="bet-amount" name="bet-amount">
+            </div>
+
+            <div class="form-group bet-buttons">
+                <div class="bet-option">
+                    <button type="button" class="high-btn">HIGH</button>
+                    <div class="bet-range">5 - 9</div>
+                </div>
+                <div class="bet-option">
+                    <button type="button" class="low-btn">LOW</button>
+                    <div class="bet-range">0 - 4</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="memo-message">Memo Message</label>
+                <input type="text" id="memo-message" name="memo-message" readonly>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="submit-btn">Submit</button>
+            </div>
+
+            <div class="form-group">
+                <label for="transaction-id">Transaction ID</label>
+                <input type="text" id="transaction-id" name="transaction-id">
+            </div>
+
+            <div class="form-group">
+                <label for="hash-id">Hash ID</label>
+                <input type="text" id="hash-id" name="hash-id">
+            </div>
+
+            <div class="form-group">
+                <label for="block-id">Block ID</label>
+                <input type="text" id="block-id" name="block-id">
+            </div>
+
+            <div class="form-group status-draw-group">
+                <div class="status-draw-item">
+                    <label for="draw-number">Draw Number</label>
+                    <input type="text" id="draw-number" name="draw-number" readonly>
+                </div>
+                <div class="status-draw-item">
+                    <label for="bet-status">Bet Status</label>
+                    <input type="text" id="bet-status" name="bet-status" readonly>
+                </div>
+            </div>
+        </form>
+    </div>    
+</body>
+</html>

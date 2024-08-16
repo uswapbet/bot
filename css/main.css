@@ -1,0 +1,123 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    max-width: 500px;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.form-group label {
+    margin-bottom: 0;
+    font-weight: bold;
+    width: 150px; /* Adjust width as needed */
+}
+
+.form-group select,
+.form-group input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group input[type="text"][readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.buttons-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group button {
+    padding: 10px 20px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 48%; /* Maintain width of submit button */
+}
+
+.high-btn {
+    background-color: #28a745;
+    color: white;
+    width: 70% !important; /* Set a fixed width for High button */
+}
+
+.low-btn {
+    background-color: #dc3545;
+    color: white;
+    width: 70% !important; /* Set a fixed width for Low button */
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: white;
+    width: 100%; /* Submit button remains 100% width */
+}
+
+.submit-btn:hover,
+.high-btn:hover,
+.low-btn:hover {
+    opacity: 0.9;
+}
+
+.bet-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.bet-option {
+    text-align: center;
+    width: 48%; /* Ensure both buttons occupy the same space */
+}
+
+.bet-range {
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+/* Add this to your CSS file */
+.status-draw-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.status-draw-item {
+    flex: 1;
+    margin-right: 10px; /* Adjust spacing as needed */
+}
+
+.status-draw-item:last-child {
+    margin-right: 0; /* Remove margin for the last item */
+}
