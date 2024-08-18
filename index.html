@@ -20,11 +20,11 @@
         <form>
             <div class="form-group inline-group">
                 <div class="inline-item">
-                    <label for="username">Username</label>
+                    <label for="username">User Name</label>
                     <input type="text" id="username" name="username">
                 </div>
                 <div class="inline-item">
-                    <label for="token-symbol" class="token-label">Select Token:</label>
+                    <label for="token-symbol" class="token-label">Select Token</label>
                     <select id="token-symbol" name="token-symbol">                    
                         <option value="BOT">BOT Token</option>
                     </select>
@@ -60,27 +60,33 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="transaction-id">Transaction ID</label>
-                <input type="text" id="transaction-id" name="transaction-id">
+            <div class="form-group inline-group">
+                <div class="inline-item">
+                    <label for="transaction-id">Transaction ID</label>
+                    <input type="text" id="transaction-id" name="transaction-id">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="hash-id">Hash ID</label>
+            <div class="form-group inline-group">
+                <div class="inline-item">
+                    <label for="hash-id">Hash ID</label>
                 <input type="text" id="hash-id" name="hash-id">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="block-id">Block ID</label>
-                <input type="text" id="block-id" name="block-id">
+            <div class="form-group inline-group">
+                <div class="inline-item">
+                    <label for="block-id">Block ID</label>
+                    <input type="text" id="block-id" name="block-id">
+                </div>
             </div>
 
-            <div class="form-group status-draw-group">
-                <div class="status-draw-item">
+            <div class="form-group status-draw-group inline-group">
+                <div class="status-draw-item inline-item">
                     <label for="draw-number">Draw Number</label>
                     <input type="text" id="draw-number" name="draw-number" readonly>
                 </div>
-                <div class="status-draw-item">
+                <div class="status-draw-item inline-item">
                     <label for="bet-status">Bet Status</label>
                     <input type="text" id="bet-status" name="bet-status" readonly>
                 </div>
