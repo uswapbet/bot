@@ -121,3 +121,33 @@ form {
 .status-draw-item:last-child {
     margin-right: 0; /* Remove margin for the last item */
 }
+
+.inline-group {
+    display: flex;
+    align-items: center; /* Vertically centers items */
+    justify-content: space-between;
+}
+
+.inline-item {
+    flex: 1;
+    margin-right: 10px; /* Space between items */    
+    align-items: center; /* Ensure items inside inline-item are centered */
+}
+
+.inline-item:last-child {
+    margin-right: 0; /* Remove margin for the last item */
+}
+
+.inline-item label {
+    width: auto; /* Adjust label width */
+    margin-right: 10px;
+}
+
+.inline-item input[type="text"],
+.inline-item select {
+    width: 100%; /* Adjust input and select width */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
