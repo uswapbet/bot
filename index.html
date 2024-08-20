@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Token Bets</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap">
     <link rel="stylesheet" href="css/main.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./libs/sscjs@latest/dist/ssc.min.js"></script>
@@ -13,12 +14,8 @@
     <script src="./js/Main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Create an instance of MainClass
             const mainClassInstance = new MainClass();
-            
-            // Call the init method to perform asynchronous setup
             mainClassInstance.init().then(() => {
-                // Initialization complete; you can now interact with the instance
                 console.log("MainClass initialized successfully.");
             }).catch(error => {
                 console.error("Initialization failed:", error);
@@ -69,33 +66,35 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <p id="bet-process-info">Bet amount transferred successfully...</p>
+            </div>
+
             <div class="form-group inline-group">
                 <div class="inline-item">
                     <label for="memo-message">Memo Message</label>
                     <input type="text" id="memo-message" name="memo-message" readonly>
+                </div>
+
+                <div class="inline-item">
+                    <label for="block-id">Block ID</label>
+                    <input type="text" id="block-id" name="block-id" readonly>
                 </div>
             </div>
 
             <div class="form-group inline-group">
                 <div class="inline-item">
                     <label for="transaction-id">Transaction ID</label>
-                    <input type="text" id="transaction-id" name="transaction-id">
+                    <input type="text" id="transaction-id" name="transaction-id" readonly>
                 </div>
             </div>
 
             <div class="form-group inline-group">
                 <div class="inline-item">
                     <label for="hash-id">Hash ID</label>
-                <input type="text" id="hash-id" name="hash-id">
+                <input type="text" id="hash-id" name="hash-id" readonly>
                 </div>
-            </div>
-
-            <div class="form-group inline-group">
-                <div class="inline-item">
-                    <label for="block-id">Block ID</label>
-                    <input type="text" id="block-id" name="block-id">
-                </div>
-            </div>
+            </div>            
 
             <div class="form-group status-draw-group inline-group">
                 <div class="status-draw-item inline-item">

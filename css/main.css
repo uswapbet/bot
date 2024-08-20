@@ -1,5 +1,7 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
@@ -14,9 +16,9 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 50%;
-    max-width: 500px;
-    margin: auto;
+    width: 100%; /* Use full width available */
+    max-width: 500px; /* Cap the maximum width */
+    margin: auto; /* Center horizontally */
     box-sizing: border-box;
 }
 
@@ -27,25 +29,31 @@ form {
 
 .form-group {
     margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     text-align: left;
 }
 
 .form-group label {
-    margin-bottom: 0;
-    font-weight: bold;
-    width: 150px; /* Adjust width as needed */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 13px;
 }
 
 .form-group select,
-.form-group input[type="text"] {
-    flex: 1;
-    padding: 8px;
+.form-group input[type="text"],
+.form-group button,
+.inline-item input[type="text"],
+.inline-item select,
+.high-btn,
+.low-btn,
+.refresh-btn {
+    height: 35px; /* Consistent height for text boxes, dropdowns, and buttons */
+    padding: 5px;
+    font-size: 13px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    vertical-align: middle; /* Ensures alignment with text labels */
 }
 
 .form-group input[type="text"][readonly] {
@@ -53,114 +61,95 @@ form {
     cursor: not-allowed;
 }
 
-.buttons-group {
-    display: flex;
-    justify-content: space-between;
-}
-
-.form-group button {
-    padding: 10px 20px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 48%; /* Maintain width of submit button */
-}
-
-.high-btn {
-    background-color: #28a745;
-    color: white;
-    width: 70% !important; /* Set a fixed width for High button */
-}
-
-.low-btn {
-    background-color: #dc3545;
-    color: white;
-    width: 70% !important; /* Set a fixed width for Low button */
-}
-
-.high-btn:hover,
-.low-btn:hover {
-    opacity: 0.9;
-}
-
+.buttons-group,
 .bet-buttons {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
+.high-btn,
+.low-btn {
+    color: white;
+    width: 70%;
+    border: none;
+    cursor: pointer;
+}
+
+.high-btn {
+    background-color: #28a745;
+}
+
+.low-btn {
+    background-color: #dc3545;
+}
+
+.high-btn:hover,
+.low-btn:hover,
+.refresh-btn:hover {
+    opacity: 0.9;
+}
+
 .bet-option {
     text-align: center;
-    width: 48%; /* Ensure both buttons occupy the same space */
+    width: 48%;
 }
 
 .bet-range {
     margin-top: 5px;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 13px;
 }
 
-/* Add this to your CSS file */
-.status-draw-group {
-    display: flex;
-    justify-content: space-between;
-}
-
-.status-draw-item {
-    flex: 1;
-    margin-right: 10px; /* Adjust spacing as needed */
-}
-
-.status-draw-item:last-child {
-    margin-right: 0; /* Remove margin for the last item */
-}
-
+.status-draw-group,
 .inline-group {
     display: flex;
-    align-items: center; /* Vertically centers items */
     justify-content: space-between;
+    align-items: flex-start;
 }
 
+.status-draw-item,
 .inline-item {
     flex: 1;
-    margin-right: 10px; /* Space between items */    
-    align-items: center; /* Ensure items inside inline-item are centered */
-}
-
-.inline-item:last-child {
-    margin-right: 0; /* Remove margin for the last item */
-}
-
-.inline-item label {
-    width: auto; /* Adjust label width */
     margin-right: 10px;
 }
 
-.inline-item input[type="text"],
-.inline-item select {
-    width: 100%; /* Adjust input and select width */
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.status-draw-item:last-child,
+.inline-item:last-child {
+    margin-right: 0;
+}
+
+.inline-item label {
+    width: auto;
+    margin-right: 10px;
+    font-weight: 600;
+    font-size: 13px;
 }
 
 .token-text {
-    width: 65% !important; /* Width of the input field */
+    width: 65%;
 }
 
-.refresh-btn { 
-    padding: 8px !important;
-    margin: 0px !important;   
+.refresh-btn {
+    margin: 0;
     background-color: #007bff;
     color: white;
-    border: none;
-    border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
-    width: 30% !important; /* Width of the button */    
 }
 
-.refresh-btn:hover {
-    background-color: #0056b3;
+#bet-process-info {
+    height: 0px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease-in-out;
+    color: rgb(3, 184, 48);
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+}
+
+/* Special case for Transaction ID and Hash ID to take 100% width */
+#transaction-id,
+#hash-id {
+    width: 100%;
 }

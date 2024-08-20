@@ -226,7 +226,7 @@ class MainClass {
                                 if (Object.keys(betMemo).length > 0 && betMemo.bet_status !== null && betMemo.bet_status !== undefined) {
                                     let betStatus = await this.statusProcessor(calcNumber, betMemo.bet_status);
                                     document.getElementById('bet-status').value = (betStatus) ? 'Win' : 'Loss';
-
+                                    await this.betProcessStatus();
                                     await this.handleTokenSelection();
                                 }
                             }
@@ -242,6 +242,27 @@ class MainClass {
             console.error("Error sending tokens:", error);
         }
     }
+
+    async betProcessStatus() {
+        try {
+            const betProcessEl = document.getElementById('bet-process-info');
+            betProcessEl.textContent = "Bet amount transferred successfully...";
+            betProcessEl.style.visibility = 'visible';
+            betProcessEl.style.opacity = '1'; // Show the message with fade-in effect
+    
+            // After 3 seconds, start fading out the message
+            setTimeout(() => {
+                betProcessEl.style.opacity = '0'; // Fade out the message
+            }, 3000);
+    
+            // After 4 seconds, hide the message but keep its space
+            setTimeout(() => {
+                betProcessEl.style.visibility = 'hidden';
+            }, 4000);
+        } catch (error) {
+            console.log("Error at betProcessStatus():", error);
+        }
+    }  
 
     async hashBlockAddup(transactionId) {
         try {
