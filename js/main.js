@@ -31,14 +31,45 @@ class MainClass {
 
         // Initialize event listeners
         this.initializeEventListeners();
+
+        this.maxToken = 0;
+        this.minToken = 0;
     }
 
     initializeEventListeners() {
         document.getElementById('token-symbol').addEventListener('change', () => this.handleTokenSelection());
         document.getElementById('username').addEventListener('input', () => this.handleTokenSelection());
+        document.getElementById('bet-amount').addEventListener('input', () => this.validateBetAmount());
+        document.getElementById('refresh-balance').addEventListener('click', () => this.refreshTokenBalance());
         
         this.initializeBetButtons();
         this.checkKeychain();
+        this.loadTokenInfo(document.getElementById('token-symbol').value);
+    }
+
+    async fetchTokenSettings() {
+        try {
+            const response = await axios.get('https://bet-json.github.io/info/info.json');            
+            return response.data.token_setting;
+        } catch (error) {
+            console.error('Error fetching token settings:', error);
+            return [];
+        }
+    }
+
+    async loadTokenInfo(tokenSymbol) {
+        try {
+            const fetchSetting = await this.fetchTokenSettings();
+            const tokenData = fetchSetting.find(token => token.includes(tokenSymbol)); 
+            if (tokenData) {
+                this.minToken = tokenData[1];
+                this.maxToken = tokenData[2];
+            } else {
+                console.error('Token data not found for the selected token symbol.');                
+            }
+        } catch (error) {
+            console.error('Error at loadTokenInfo():', error);
+        }
     }
 
     async initializeBetButtons() {
@@ -92,13 +123,69 @@ class MainClass {
         }
 
         try {
-            const balance = await this.getTokenBalance(account, selectedTokenSymbol);
-            console.log("Token Balance:", balance);
+            await this.loadTokenInfo(selectedTokenSymbol);
+            console.log(`Selected Token: ${selectedTokenSymbol}, Min: ${this.minToken}, Max: ${this.maxToken}`);
+
+            const balance = await this.getTokenBalance(account, selectedTokenSymbol);            
 
             document.getElementById('token-balance').value = balance[selectedTokenSymbol];
+            this.validateBetAmount();  // Validate bet amount after token selection
         } catch (error) {
             console.error("Error handling token selection:", error);
         }
+    }
+
+    async validateBetAmount() {
+        try {
+            const betAmountEl = document.getElementById('bet-amount');
+            const betAmountErrorEl = document.getElementById('bet-amount-error');
+            const amount = parseFloat(betAmountEl.value);            
+    
+            if (isNaN(amount)) {
+                betAmountErrorEl.style.display = 'none'; // Hide error if input is not a number
+                betAmountEl.removeAttribute('readonly'); // Make bet-amount editable
+                await this.setBetButtonsEnabled(false);
+                return;
+            }
+    
+            if (amount < this.minToken || amount > this.maxToken) {
+                betAmountErrorEl.textContent = `Bet amount must be between ${this.minToken} and ${this.maxToken}.`;
+                betAmountErrorEl.style.display = 'block'; // Show error message
+                await this.setBetButtonsEnabled(false);
+            } else {
+                betAmountErrorEl.style.display = 'none'; // Hide error message
+                betAmountEl.removeAttribute('readonly'); // Make bet-amount editable
+                await this.setBetButtonsEnabled(true);
+            }        
+        } catch (error) {
+            console.log("Error at validateBetAmount():", error);
+        }
+    }
+    
+    async refreshTokenBalance() {
+        const selectedTokenSymbol = document.getElementById('token-symbol').value;
+        const account = document.getElementById('username').value;
+    
+        if (!account) {
+            console.error("Account name is required.");
+            return;
+        }
+    
+        try {
+            await this.loadTokenInfo(selectedTokenSymbol);
+            const balance = await this.getTokenBalance(account, selectedTokenSymbol);
+            document.getElementById('token-balance').value = balance[selectedTokenSymbol];            
+        } catch (error) {
+            console.error("Error refreshing token balance:", error);
+        }
+    }
+
+    async setBetButtonsEnabled(enabled) {
+        const highBtn = document.querySelector(".high-btn");
+        const lowBtn = document.querySelector(".low-btn");
+
+        highBtn.disabled = !enabled;
+        lowBtn.disabled = !enabled;
     }
 
     async getDecimal(val) {
@@ -110,7 +197,7 @@ class MainClass {
         const tokenSymbol = document.getElementById('token-symbol').value;
         const amount = parseFloat(document.getElementById('bet-amount').value);
         const memo = document.getElementById('memo-message').value;
-
+                
         if (!username || !tokenSymbol || isNaN(amount)) {
             console.error("All fields are required and amount must be a number.");
             return;

@@ -27,6 +27,7 @@
                     <label for="token-symbol" class="token-label">Select Token</label>
                     <select id="token-symbol" name="token-symbol">                    
                         <option value="BOT">BOT Token</option>
+                        <option value="UPME">UPME Token</option>
                     </select>
                 </div>
             </div>
@@ -34,21 +35,26 @@
             <div class="form-group inline-group">
                 <div class="inline-item">
                     <label for="token-balance">Token Balance</label>
-                    <input type="text" id="token-balance" name="token-balance" readonly>
+                    <input class="token-text" type="text" id="token-balance" name="token-balance" readonly>
+                    <button type="button" id="refresh-balance" class="refresh-btn">Refresh</button>
                 </div>
                 <div class="inline-item">
                     <label for="bet-amount">Bet Token Amount</label>
-                    <input type="text" id="bet-amount" name="bet-amount">
+                    <input type="text" id="bet-amount" name="bet-amount">                    
                 </div>
+            </div>
+
+            <div class="form-group">
+                <p id="bet-amount-error" style="display: none; color: red;">Bet amount must be between min and max token values.</p>
             </div>
 
             <div class="form-group bet-buttons">
                 <div class="bet-option">
-                    <button type="button" class="high-btn">HIGH</button>
+                    <button type="button" class="high-btn" disabled>HIGH</button>
                     <div class="bet-range">5 - 9</div>
                 </div>
                 <div class="bet-option">
-                    <button type="button" class="low-btn">LOW</button>
+                    <button type="button" class="low-btn" disabled>LOW</button>
                     <div class="bet-range">0 - 4</div>
                 </div>
             </div>
