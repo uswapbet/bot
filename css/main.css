@@ -42,7 +42,7 @@ form {
 .form-group select,
 .form-group input[type="text"] {
     flex: 1;
-    padding: 10px;
+    padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;

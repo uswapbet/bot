@@ -8,10 +8,21 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./libs/sscjs@latest/dist/ssc.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="./js/main.js"></script>
+
+    <script src="./js/ApiChecker.js"></script>
+    <script src="./js/Main.js"></script>
     <script>
-        window.addEventListener('load', function() {
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create an instance of MainClass
             const mainClassInstance = new MainClass();
+            
+            // Call the init method to perform asynchronous setup
+            mainClassInstance.init().then(() => {
+                // Initialization complete; you can now interact with the instance
+                console.log("MainClass initialized successfully.");
+            }).catch(error => {
+                console.error("Initialization failed:", error);
+            });
         });
     </script>    
 </head>
@@ -27,7 +38,6 @@
                     <label for="token-symbol" class="token-label">Select Token</label>
                     <select id="token-symbol" name="token-symbol">                    
                         <option value="BOT">BOT Token</option>
-                        <option value="UPME">UPME Token</option>
                     </select>
                 </div>
             </div>
@@ -45,7 +55,7 @@
             </div>
 
             <div class="form-group">
-                <p id="bet-amount-error" style="display: none; color: red;">Bet amount must be between min and max token values.</p>
+                <p id="bet-amount-error" style="display: none; color: red;">* Bet amount must be between min and max token values.</p>
             </div>
 
             <div class="form-group bet-buttons">
