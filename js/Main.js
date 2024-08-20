@@ -254,6 +254,9 @@ class MainClass {
 
     async calculateNumber(heBlock, heTransactionId, hash) {
         try {
+            console.log("heBlock:", heBlock);
+            console.log("heTransactionId:", heTransactionId);
+            console.log("hash:", hash);
             // Combine the block number, transaction ID, and hash into a single string
             const combined = `${heBlock}${heTransactionId}${hash}`;
             
