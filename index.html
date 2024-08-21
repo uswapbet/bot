@@ -11,7 +11,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="./js/ApiChecker.js"></script>
-    <script src="./js/Main.js"></script>
+    <script src="./js/AccountChecker.js"></script>
+    <script src="./js/Main.js"></script>    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const mainClassInstance = new MainClass();
@@ -24,89 +25,114 @@
     </script>    
 </head>
 <body>
-    <div class="form-container">
-        <form>
-            <div class="form-group inline-group">
-                <div class="inline-item">
-                    <label for="username">User Name</label>
-                    <input type="text" id="username" name="username">
+    <div class="container">
+        <div class="form-container">
+            <form>
+                <div class="form-group inline-group">
+                    <div class="inline-item">
+                        <label for="username">User Name</label>
+                        <input type="text" id="username" name="username">
+                    </div>
+                    <div class="inline-item">
+                        <label for="token-symbol" class="token-label">Select Token</label>
+                        <select id="token-symbol" name="token-symbol">                    
+                            <option value="BOT">BOT Token</option>
+                            <!--<option value="HELIOS">HELIOS Token</option>-->
+                        </select>
+                    </div>
                 </div>
-                <div class="inline-item">
-                    <label for="token-symbol" class="token-label">Select Token</label>
-                    <select id="token-symbol" name="token-symbol">                    
-                        <option value="BOT">BOT Token</option>
-                    </select>
+                
+                <div class="form-group inline-group">
+                    <div class="inline-item">
+                        <label for="token-balance">Token Balance</label>
+                        <input class="token-text" type="text" id="token-balance" name="token-balance" readonly>
+                        <button type="button" id="refresh-balance" class="refresh-btn">Refresh</button>
+                    </div>
+                    <div class="inline-item">
+                        <label for="bet-amount">Bet Token Amount</label>
+                        <input type="text" id="bet-amount" name="bet-amount">                    
+                    </div>
                 </div>
+
+                <div class="form-group bet-buttons">
+                    <div class="bet-option">
+                        <button type="button" class="high-btn" disabled>HIGH</button>
+                        <div class="bet-range">5 - 9</div>
+                    </div>
+                    <div class="bet-option">
+                        <button type="button" class="low-btn" disabled>LOW</button>
+                        <div class="bet-range">0 - 4</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p id="bet-process-info">Bet amount transferred successfully...</p>
+                </div>
+
+                <div class="form-group inline-group">
+                    <div class="inline-item">
+                        <label for="memo-message">Memo Message</label>
+                        <input type="text" id="memo-message" name="memo-message" readonly>
+                    </div>
+
+                    <div class="inline-item">
+                        <label for="block-id">Block ID</label>
+                        <input type="text" id="block-id" name="block-id" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group inline-group">
+                    <div class="inline-item">
+                        <label for="transaction-id">Transaction ID</label>
+                        <input type="text" id="transaction-id" name="transaction-id" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group inline-group">
+                    <div class="inline-item">
+                        <label for="hash-id">Hash ID</label>
+                    <input type="text" id="hash-id" name="hash-id" readonly>
+                    </div>
+                </div>            
+
+                <div class="form-group status-draw-group inline-group">
+                    <div class="status-draw-item inline-item">
+                        <label for="draw-number">Draw Number</label>
+                        <input type="text" id="draw-number" name="draw-number" readonly>
+                    </div>
+                    <div class="status-draw-item inline-item">
+                        <label for="bet-status">Bet Status</label>
+                        <input type="text" id="bet-status" name="bet-status" readonly>
+                    </div>
+                </div>
+            </form>
+        </div>        
+       
+        <!-- Updated panel for Account Balance -->
+        <div class="balance-panel">
+            <h3>Reward Account Balance</h3>
+            
+            <!-- First row for account name -->
+            <div class="balance-row">
+                <span id="bet-account-name">Loading...</span>
             </div>
             
-            <div class="form-group inline-group">
-                <div class="inline-item">
-                    <label for="token-balance">Token Balance</label>
-                    <input class="token-text" type="text" id="token-balance" name="token-balance" readonly>
-                    <button type="button" id="refresh-balance" class="refresh-btn">Refresh</button>
-                </div>
-                <div class="inline-item">
-                    <label for="bet-amount">Bet Token Amount</label>
-                    <input type="text" id="bet-amount" name="bet-amount">                    
-                </div>
-            </div>
-
-            <div class="form-group">
-                <p id="bet-amount-error" style="display: none; color: red;">* Bet amount must be between min and max token values.</p>
-            </div>
-
-            <div class="form-group bet-buttons">
-                <div class="bet-option">
-                    <button type="button" class="high-btn" disabled>HIGH</button>
-                    <div class="bet-range">5 - 9</div>
-                </div>
-                <div class="bet-option">
-                    <button type="button" class="low-btn" disabled>LOW</button>
-                    <div class="bet-range">0 - 4</div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <p id="bet-process-info">Bet amount transferred successfully...</p>
-            </div>
-
-            <div class="form-group inline-group">
-                <div class="inline-item">
-                    <label for="memo-message">Memo Message</label>
-                    <input type="text" id="memo-message" name="memo-message" readonly>
-                </div>
-
-                <div class="inline-item">
-                    <label for="block-id">Block ID</label>
-                    <input type="text" id="block-id" name="block-id" readonly>
-                </div>
-            </div>
-
-            <div class="form-group inline-group">
-                <div class="inline-item">
-                    <label for="transaction-id">Transaction ID</label>
-                    <input type="text" id="transaction-id" name="transaction-id" readonly>
-                </div>
-            </div>
-
-            <div class="form-group inline-group">
-                <div class="inline-item">
-                    <label for="hash-id">Hash ID</label>
-                <input type="text" id="hash-id" name="hash-id" readonly>
-                </div>
+            <!-- Second row for balance and refresh button -->
+            <div class="balance-row">
+                <span id="bet-account-balance">Loading...</span>
+                <button id="refresh-bet-account-balance">
+                    <svg class="bal-refresh-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 489.645 489.645">
+                        <g>
+                            <path d="M460.656,132.911c-58.7-122.1-212.2-166.5-331.8-104.1c-9.4,5.2-13.5,16.6-8.3,27c5.2,9.4,16.6,13.5,27,8.3
+                                    c99.9-52,227.4-14.9,276.7,86.3c65.4,134.3-19,236.7-87.4,274.6c-93.1,51.7-211.2,17.4-267.6-70.7l69.3,14.5
+                                    c10.4,2.1,21.8-4.2,23.9-15.6c2.1-10.4-4.2-21.8-15.6-23.9l-122.8-25c-20.6-2-25,16.6-23.9,22.9l15.6,123.8
+                                    c1,10.4,9.4,17.7,19.8,17.7c12.8,0,20.8-12.5,19.8-23.9l-6-50.5c57.4,70.8,170.3,131.2,307.4,68.2
+                                    C414.856,432.511,548.256,314.811,460.656,132.911z"/>
+                        </g>
+                    </svg>
+                </button>
             </div>            
-
-            <div class="form-group status-draw-group inline-group">
-                <div class="status-draw-item inline-item">
-                    <label for="draw-number">Draw Number</label>
-                    <input type="text" id="draw-number" name="draw-number" readonly>
-                </div>
-                <div class="status-draw-item inline-item">
-                    <label for="bet-status">Bet Status</label>
-                    <input type="text" id="bet-status" name="bet-status" readonly>
-                </div>
-            </div>
-        </form>
-    </div>    
+        </div>    
+    </div>
 </body>
 </html>

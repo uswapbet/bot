@@ -37,15 +37,47 @@ class MainClass {
     }
 
     initializeEventListeners() {
-        document.getElementById('token-symbol').addEventListener('change', () => this.handleTokenSelection());
-        document.getElementById('username').addEventListener('input', () => this.handleTokenSelection());
-        document.getElementById('bet-amount').addEventListener('input', () => this.validateBetAmount());
-        document.getElementById('refresh-balance').addEventListener('click', () => this.refreshTokenBalance());
+        const usernameEl = document.getElementById('username');
+        const tokenSymbolEl = document.getElementById('token-symbol');
+        const betAmountEl = document.getElementById('bet-amount');
+        const refreshBalanceEl = document.getElementById('refresh-balance');
+        const refreshBetAccountBalanceEl = document.getElementById('refresh-bet-account-balance');
+    
+        tokenSymbolEl.addEventListener('change', () => this.handleTokenSelection());
+        usernameEl.addEventListener('input', () => {
+            if (usernameEl.value === "") {                
+                this.handleTokenSelection(); // Trigger when the input becomes empty
+            } else {                
+                this.handleTokenSelection();
+            }
+        });
+        betAmountEl.addEventListener('input', () => this.validateBetAmount());
+        refreshBalanceEl.addEventListener('click', () => this.refreshTokenBalance());
+        refreshBetAccountBalanceEl.addEventListener('click', () => this.betAccountBalance(tokenSymbolEl.value));
         
         this.initializeBetButtons();
         this.checkKeychain();
-        this.loadTokenInfo(document.getElementById('token-symbol').value);
-    }
+        this.loadTokenInfo(tokenSymbolEl.value);
+        this.betAccountBalance(tokenSymbolEl.value);
+    } 
+    
+    async betAccountBalance(tokenSymbol) {
+        try {
+            const accountChecker = new AccountChecker(this.ssc, tokenSymbol);
+            const betAccountInfo = await accountChecker.betAccBalance();
+            if (betAccountInfo !== null) {
+                document.getElementById('bet-account-name').textContent = betAccountInfo.accountInfo;
+                document.getElementById('bet-account-balance').textContent = `${betAccountInfo.formattedBalance} ${tokenSymbol}`;
+            } else {
+                document.getElementById('bet-account-name').textContent = "Account not found";
+                document.getElementById('bet-account-balance').textContent = "0";
+            }            
+        } catch (error) {
+            console.log("Error at betAccountBalance():", error);
+            document.getElementById('bet-account-name').textContent = "Error loading account";
+            document.getElementById('bet-account-balance').textContent = "0";
+        }
+    }    
 
     async fetchTokenSettings() {
         try {
@@ -114,22 +146,12 @@ class MainClass {
     }
 
     async handleTokenSelection() {
-        const selectedTokenSymbol = document.getElementById('token-symbol').value;
-        const account = document.getElementById('username').value;
-
-        if (!account) {
-            console.error("Account name is required.");
-            return;
-        }
-
         try {
-            await this.loadTokenInfo(selectedTokenSymbol);
-            console.log(`Selected Token: ${selectedTokenSymbol}, Min: ${this.minToken}, Max: ${this.maxToken}`);
+            const tokenSymbolEl = document.getElementById('token-symbol');
+            await this.betAccountBalance(tokenSymbolEl.value);
 
-            const balance = await this.getTokenBalance(account, selectedTokenSymbol);            
-
-            document.getElementById('token-balance').value = balance[selectedTokenSymbol];
-            this.validateBetAmount();  // Validate bet amount after token selection
+            await this.refreshTokenBalance();
+            await this.validateBetAmount();  // Validate bet amount after token selection
         } catch (error) {
             console.error("Error handling token selection:", error);
         }
@@ -137,30 +159,37 @@ class MainClass {
 
     async validateBetAmount() {
         try {
-            const betAmountEl = document.getElementById('bet-amount');
-            const betAmountErrorEl = document.getElementById('bet-amount-error');
-            const amount = parseFloat(betAmountEl.value);            
+            const betAmountEl = document.getElementById('bet-amount');            
+            const amount = parseFloat(betAmountEl.value);
     
-            if (isNaN(amount)) {
-                betAmountErrorEl.style.display = 'none'; // Hide error if input is not a number
+            if (betAmountEl.value === null || betAmountEl.value === "") {
+                await this.betErrorStatus("", false); // No error message for null or empty string
+                betAmountEl.removeAttribute('readonly'); // Make bet-amount editable
+                await this.setBetButtonsEnabled(false);
+                return;
+            }
+            
+            if (isNaN(amount)) { 
+                let errMsg = "* Bet amount should be an integer & more than 0";              
+                await this.betErrorStatus(errMsg, true);
                 betAmountEl.removeAttribute('readonly'); // Make bet-amount editable
                 await this.setBetButtonsEnabled(false);
                 return;
             }
     
-            if (amount < this.minToken || amount > this.maxToken) {
-                betAmountErrorEl.textContent = `* Bet amount must be between ${this.minToken} and ${this.maxToken}.`;
-                betAmountErrorEl.style.display = 'block'; // Show error message
+            if (amount < this.minToken || amount > this.maxToken) {                
+                let errMsg = `* Bet amount must be between ${this.minToken} and ${this.maxToken}.`;
+                await this.betErrorStatus(errMsg, true);
                 await this.setBetButtonsEnabled(false);
-            } else {
-                betAmountErrorEl.style.display = 'none'; // Hide error message
+            } else {               
+                await this.betErrorStatus("", false);
                 betAmountEl.removeAttribute('readonly'); // Make bet-amount editable
                 await this.setBetButtonsEnabled(true);
             }        
         } catch (error) {
             console.log("Error at validateBetAmount():", error);
         }
-    }
+    }    
     
     async refreshTokenBalance() {
         const selectedTokenSymbol = document.getElementById('token-symbol').value;
@@ -168,10 +197,16 @@ class MainClass {
     
         if (!account) {
             console.error("Account name is required.");
+            document.getElementById('token-balance').value = "";
             return;
         }
     
         try {
+            if (account === null || account === "") {                             
+                await this.setBetButtonsEnabled(false);
+                return;
+            }
+
             await this.loadTokenInfo(selectedTokenSymbol);
             const balance = await this.getTokenBalance(account, selectedTokenSymbol);
             document.getElementById('token-balance').value = balance[selectedTokenSymbol];            
@@ -198,6 +233,9 @@ class MainClass {
         const amount = parseFloat(document.getElementById('bet-amount').value);
         const memo = document.getElementById('memo-message').value;
 
+        const accountChecker = new AccountChecker(this.ssc, tokenSymbol);
+        const accountInfo = await accountChecker.betTokenAccount();        
+
         if (!username || !tokenSymbol || isNaN(amount)) {
             console.error("All fields are required and amount must be a number.");
             return;
@@ -207,7 +245,7 @@ class MainClass {
 
         try {
             if (window.hive_keychain) {
-                window.hive_keychain.requestSendToken(username, "asimo", formattedAmount.toFixed(3), memo, tokenSymbol, async (response) => {
+                window.hive_keychain.requestSendToken(username, accountInfo, formattedAmount.toFixed(3), memo, tokenSymbol, async (response) => {
                     if (response.success && response.result) {
                         let transactionId = response.result.tx_id;
 
@@ -225,9 +263,14 @@ class MainClass {
                                 let betMemo = await this.checkMemo(memo);
                                 if (Object.keys(betMemo).length > 0 && betMemo.bet_status !== null && betMemo.bet_status !== undefined) {
                                     let betStatus = await this.statusProcessor(calcNumber, betMemo.bet_status);
-                                    document.getElementById('bet-status').value = (betStatus) ? 'Win' : 'Loss';
-                                    await this.betProcessStatus();
+                                    const betStatusEl = document.getElementById('bet-status');
+                                    betStatusEl.value = betStatus ? 'Win' : 'Loss';
+
+                                    // Change the color based on the bet status
+                                    betStatusEl.style.color = betStatus ? 'green' : 'red';
+
                                     await this.handleTokenSelection();
+                                    await this.betProcessStatus();                                    
                                 }
                             }
                         }
@@ -239,30 +282,61 @@ class MainClass {
                 console.error("Hive Keychain is not available.");
             }
         } catch (error) {
-            console.error("Error sending tokens:", error);
+            console.error("Error sendTokens():", error);
+        }
+    }
+
+    async betErrorStatus(errMsg = "Bet process error", errorStatus = true) {
+        try {
+            if (errorStatus) {
+                await this.showMessageWithFade('bet-process-info', errMsg, 'red', false, errorStatus);     
+            } else {
+                await this.showMessageWithFade('bet-process-info', errMsg, 'red', false, errorStatus);
+            }            
+        } catch (error) {
+            console.log("Error at betErrorStatus():", error);    
         }
     }
 
     async betProcessStatus() {
         try {
-            const betProcessEl = document.getElementById('bet-process-info');
-            betProcessEl.textContent = "Bet amount transferred successfully...";
-            betProcessEl.style.visibility = 'visible';
-            betProcessEl.style.opacity = '1'; // Show the message with fade-in effect
-    
-            // After 3 seconds, start fading out the message
-            setTimeout(() => {
-                betProcessEl.style.opacity = '0'; // Fade out the message
-            }, 3000);
-    
-            // After 4 seconds, hide the message but keep its space
-            setTimeout(() => {
-                betProcessEl.style.visibility = 'hidden';
-            }, 4000);
+            await this.showMessageWithFade('bet-process-info', 'Bet amount transferred successfully...', 'green', true, true, 3000, 1000);
         } catch (error) {
             console.log("Error at betProcessStatus():", error);
         }
-    }  
+    }
+    
+    async showMessageWithFade(elementId, message, color = 'rgb(3, 184, 48)', timeOutStatus = true, displayStatus = true, duration = 3000, fadeOutDuration = 1000) {
+        try {
+            const messageEl = document.getElementById(elementId);
+            messageEl.textContent = message; 
+            messageEl.style.color = color; // Set the font color
+        
+            if(timeOutStatus && displayStatus) {
+                messageEl.style.opacity = '1'; // Show the message with fade-in effect
+                messageEl.style.visibility = 'visible';
+                // Start fading out the message after the specified duration
+                setTimeout(() => {
+                    messageEl.style.opacity = '0'; // Fade out the message
+                }, duration);
+            
+                // Hide the message completely after the fadeOutDuration
+                setTimeout(() => {
+                    messageEl.style.visibility = 'hidden';
+                }, duration + fadeOutDuration);
+            } else if (!timeOutStatus && displayStatus) {
+                messageEl.style.opacity = '1'; // Show the message with fade-in effect
+                messageEl.style.visibility = 'visible';
+            } else if(!timeOutStatus && !displayStatus) {
+                messageEl.style.opacity = '0';
+                messageEl.style.visibility = 'hidden';
+            } else {
+                messageEl.style.visibility = 'hidden';
+            }           
+        } catch (error) {
+            console.log("Error at showMessageWithFade():", error);    
+        }        
+    }    
 
     async hashBlockAddup(transactionId) {
         try {

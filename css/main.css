@@ -11,15 +11,25 @@ body {
     height: 100vh;
 }
 
-.form-container {
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align the panels at the top */
+    height: auto; /* Adjust height to fit content */
+    width: 65%;
+}
+
+.form-container, .balance-panel {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Use full width available */
-    max-width: 500px; /* Cap the maximum width */
-    margin: auto; /* Center horizontally */
     box-sizing: border-box;
+}
+
+.form-container {
+    width: 70%; /* Increased width */
+    margin-right: 20px; /* Space between the panels */
 }
 
 form {
@@ -28,7 +38,7 @@ form {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     text-align: left;
 }
 
@@ -66,6 +76,7 @@ form {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    padding-top: 10px;
 }
 
 .high-btn,
@@ -152,4 +163,42 @@ form {
 #transaction-id,
 #hash-id {
     width: 100%;
+}
+
+.balance-panel {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 20px;
+}
+
+.balance-panel h3 {
+    font-size: 13px;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.balance-row {
+    display: flex;
+    align-items: center; /* Align items vertically centered */
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 10px; /* Add space between rows */
+}
+
+#refresh-bet-account-balance {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0; /* Remove padding for better alignment */
+    margin-left: 10px; /* Add space between the balance and the button */
+    display: inline-flex;
+    align-items: center; /* Center the SVG icon vertically */
+}
+
+.bal-refresh-btn {
+    width: 15px; /* Adjust size as needed */
+    height: 15px; /* Adjust size as needed */
+    fill: #0084ff;
 }
