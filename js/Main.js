@@ -360,7 +360,7 @@ class MainClass {
             console.log("heTransactionId:", heTransactionId);
             console.log("hash:", hash);
             // Combine the block number, transaction ID, and hash into a single string
-            const combined = `${heBlock}${heTransactionId}${hash}`;
+            const combined = `${heTransactionId}${hash}`;
             
             // Map each character in the string to a digit or letter value
             const digits = combined.split('').map(char => {
