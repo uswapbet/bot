@@ -239,7 +239,8 @@ class MainClass {
         const amount = parseFloat(document.getElementById('bet-amount').value);
         const memo = document.getElementById('memo-message').value;
 
-        const accountChecker = new AccountChecker(this.ssc, tokenSymbol);
+        const fetchData = await this.fetchTokenSettings();        
+        const accountChecker = new AccountChecker(this.ssc, tokenSymbol, fetchData);
         const accountInfo = await accountChecker.betTokenAccount();        
 
         if (!username || !tokenSymbol || isNaN(amount)) {

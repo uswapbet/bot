@@ -6,8 +6,8 @@ class AccountChecker {
     }
 
     async betTokenAccount() {
-        try {
-            const tokenData = this.betConfig.find(token => token.includes(this.tokenSymbol));
+        try {            
+            const tokenData = this.betConfig.find(token => token.includes(this.tokenSymbol));            
             return tokenData ? tokenData[1] : null;
         } catch (error) {
             console.log("Error at betTokenAccount():", error);
@@ -17,7 +17,7 @@ class AccountChecker {
 
     async betAccBalance() {
         try {
-            const accountInfo = await this.betTokenAccount();
+            const accountInfo = await this.betTokenAccount();            
             if (accountInfo !== null) {
                 // Correct the query structure
                 const res = await this.ssc.find(
