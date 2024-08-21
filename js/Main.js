@@ -63,15 +63,21 @@ class MainClass {
     
     async betAccountBalance(tokenSymbol) {
         try {
-            const accountChecker = new AccountChecker(this.ssc, tokenSymbol);
-            const betAccountInfo = await accountChecker.betAccBalance();
-            if (betAccountInfo !== null) {
-                document.getElementById('bet-account-name').textContent = betAccountInfo.accountInfo;
-                document.getElementById('bet-account-balance').textContent = `${betAccountInfo.formattedBalance} ${tokenSymbol}`;
+            const fetchData = await this.fetchTokenSettings();
+            if (fetchData.length > 0) {
+                const accountChecker = new AccountChecker(this.ssc, tokenSymbol, fetchData);
+                const betAccountInfo = await accountChecker.betAccBalance();
+                if (betAccountInfo !== null) {
+                    document.getElementById('bet-account-name').textContent = betAccountInfo.accountInfo;
+                    document.getElementById('bet-account-balance').textContent = `${betAccountInfo.formattedBalance} ${tokenSymbol}`;
+                } else {
+                    document.getElementById('bet-account-name').textContent = "Account not found";
+                    document.getElementById('bet-account-balance').textContent = "0";
+                }
             } else {
                 document.getElementById('bet-account-name').textContent = "Account not found";
                 document.getElementById('bet-account-balance').textContent = "0";
-            }            
+            }                        
         } catch (error) {
             console.log("Error at betAccountBalance():", error);
             document.getElementById('bet-account-name').textContent = "Error loading account";
@@ -94,8 +100,8 @@ class MainClass {
             const fetchSetting = await this.fetchTokenSettings();
             const tokenData = fetchSetting.find(token => token.includes(tokenSymbol)); 
             if (tokenData) {
-                this.minToken = tokenData[1];
-                this.maxToken = tokenData[2];
+                this.minToken = tokenData[2];
+                this.maxToken = tokenData[3];
             } else {
                 console.error('Token data not found for the selected token symbol.');                
             }

@@ -1,18 +1,13 @@
 class AccountChecker {
-    constructor(sscConfig, tokenSymbol) {
-        this.betAccount = [
-            ["BOT", "asimo"],
-            ["UPME", "upme.bet"],
-            ["HELIOS", "helios.bet"]
-        ];
-
+    constructor(sscConfig, tokenSymbol, betConfig) {
         this.ssc = sscConfig;
         this.tokenSymbol = tokenSymbol;
+        this.betConfig = betConfig;
     }
 
     async betTokenAccount() {
         try {
-            const tokenData = this.betAccount.find(token => token.includes(this.tokenSymbol));
+            const tokenData = this.betConfig.find(token => token.includes(this.tokenSymbol));
             return tokenData ? tokenData[1] : null;
         } catch (error) {
             console.log("Error at betTokenAccount():", error);
