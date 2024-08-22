@@ -22,7 +22,9 @@ class MainClass {
 
         this.maxToken = 0;
         this.minToken = 0;
-        this.refreshInterval = null; // Store the interval ID
+        this.refreshInterval = null; // Store the interval ID 
+
+        this.tokenFetcher = new TokenFetcher();
     }
 
     async init() {
@@ -42,6 +44,7 @@ class MainClass {
         const betAmountEl = document.getElementById('bet-amount');
         const refreshBalanceEl = document.getElementById('refresh-balance');
         const refreshBetAccountBalanceEl = document.getElementById('refresh-bet-account-balance');
+        const openPopUpEl = document.getElementById('open-popup-btn');
     
         tokenSymbolEl.addEventListener('change', () => this.handleTokenSelection());
         usernameEl.addEventListener('input', () => {
@@ -54,16 +57,27 @@ class MainClass {
         betAmountEl.addEventListener('input', () => this.validateBetAmount());
         refreshBalanceEl.addEventListener('click', () => this.refreshTokenBalance());
         refreshBetAccountBalanceEl.addEventListener('click', () => this.betAccountBalance(tokenSymbolEl.value));
+        openPopUpEl.addEventListener('click', () => this.openPopupCall(tokenSymbolEl.value));
         
         this.initializeBetButtons();
         this.checkKeychain();
         this.loadTokenInfo(tokenSymbolEl.value);
         this.betAccountBalance(tokenSymbolEl.value);
-    } 
+    }
+    
+    async openPopupCall(tokenSymbol) {
+        try {
+            // Initialize Popup
+            const popUpInstance = new Popup(this.ssc, tokenSymbol);
+            popUpInstance.show();   
+        } catch (error) {
+            console.error('Error at openPopupCall():', error);
+        }
+    }
     
     async betAccountBalance(tokenSymbol) {
         try {
-            const fetchData = await this.fetchTokenSettings();
+            const fetchData = await this.tokenFetcher.fetchTokenSettings();            
             if (fetchData.length > 0) {
                 const accountChecker = new AccountChecker(this.ssc, tokenSymbol, fetchData);
                 const betAccountInfo = await accountChecker.betAccBalance();
@@ -83,21 +97,11 @@ class MainClass {
             document.getElementById('bet-account-name').textContent = "Error loading account";
             document.getElementById('bet-account-balance').textContent = "0";
         }
-    }    
-
-    async fetchTokenSettings() {
-        try {
-            const response = await axios.get('https://bet-json.github.io/info/info.json');            
-            return response.data.token_setting;
-        } catch (error) {
-            console.error('Error fetching token settings:', error);
-            return [];
-        }
     }
 
     async loadTokenInfo(tokenSymbol) {
         try {
-            const fetchSetting = await this.fetchTokenSettings();
+            const fetchSetting = await this.tokenFetcher.fetchTokenSettings();
             const tokenData = fetchSetting.find(token => token.includes(tokenSymbol)); 
             if (tokenData) {
                 this.minToken = tokenData[2];
@@ -239,7 +243,7 @@ class MainClass {
         const amount = parseFloat(document.getElementById('bet-amount').value);
         const memo = document.getElementById('memo-message').value;
 
-        const fetchData = await this.fetchTokenSettings();        
+        const fetchData = await this.tokenFetcher.fetchTokenSettings();        
         const accountChecker = new AccountChecker(this.ssc, tokenSymbol, fetchData);
         const accountInfo = await accountChecker.betTokenAccount();        
 
@@ -263,14 +267,14 @@ class MainClass {
                             document.getElementById('hash-id').value = hashBlock.hash;
                             document.getElementById('block-id').value = hashBlock.blockNumber;
 
-                            let calcNumber = await this.calculateNumber(hashBlock.blockNumber, transactionId, hashBlock.hash);
+                            const calculateNumber = new CalculateNumber();
+                            let calcNumber = await calculateNumber.calcNumber(hashBlock.blockNumber, transactionId, hashBlock.hash);
                             if (calcNumber !== null) {
                                 document.getElementById('draw-number').value = calcNumber;
 
                                 let betMemo = await this.checkMemo(memo);
                                 if (Object.keys(betMemo).length > 0 && betMemo.bet_status !== null && betMemo.bet_status !== undefined) {
-                                    let betStatus = await this.statusProcessor(calcNumber, betMemo.bet_status);
-                                    console.log("betStatus:", betStatus);
+                                    let betStatus = await this.statusProcessor(calcNumber, betMemo.bet_status);                                    
                                     const betStatusEl = document.getElementById('bet-status');
                                     betStatusEl.value = betStatus ? 'Win' : 'Loss';
 
@@ -296,10 +300,11 @@ class MainClass {
 
     async betErrorStatus(errMsg = "Bet process error", errorStatus = true) {
         try {
+            const messageViewer = new MessageViewer();
             if (errorStatus) {
-                await this.showMessageWithFade('bet-process-info', errMsg, 'red', false, errorStatus);     
+                await messageViewer.showMessageWithFade('bet-process-info', errMsg, 'red', false, errorStatus);     
             } else {
-                await this.showMessageWithFade('bet-process-info', errMsg, 'red', false, errorStatus);
+                await messageViewer.showMessageWithFade('bet-process-info', errMsg, 'red', false, errorStatus);
             }            
         } catch (error) {
             console.log("Error at betErrorStatus():", error);    
@@ -308,43 +313,12 @@ class MainClass {
 
     async betProcessStatus() {
         try {
-            await this.showMessageWithFade('bet-process-info', 'Bet amount transferred successfully...', 'green', true, true, 3000, 1000);
+            const messageViewer = new MessageViewer();
+            await messageViewer.showMessageWithFade('bet-process-info', 'Bet amount transferred successfully...', 'green', true, true, 3000, 1000);
         } catch (error) {
             console.log("Error at betProcessStatus():", error);
         }
-    }
-    
-    async showMessageWithFade(elementId, message, color = 'rgb(3, 184, 48)', timeOutStatus = true, displayStatus = true, duration = 3000, fadeOutDuration = 1000) {
-        try {
-            const messageEl = document.getElementById(elementId);
-            messageEl.textContent = message; 
-            messageEl.style.color = color; // Set the font color
-        
-            if(timeOutStatus && displayStatus) {
-                messageEl.style.opacity = '1'; // Show the message with fade-in effect
-                messageEl.style.visibility = 'visible';
-                // Start fading out the message after the specified duration
-                setTimeout(() => {
-                    messageEl.style.opacity = '0'; // Fade out the message
-                }, duration);
-            
-                // Hide the message completely after the fadeOutDuration
-                setTimeout(() => {
-                    messageEl.style.visibility = 'hidden';
-                }, duration + fadeOutDuration);
-            } else if (!timeOutStatus && displayStatus) {
-                messageEl.style.opacity = '1'; // Show the message with fade-in effect
-                messageEl.style.visibility = 'visible';
-            } else if(!timeOutStatus && !displayStatus) {
-                messageEl.style.opacity = '0';
-                messageEl.style.visibility = 'hidden';
-            } else {
-                messageEl.style.visibility = 'hidden';
-            }           
-        } catch (error) {
-            console.log("Error at showMessageWithFade():", error);    
-        }        
-    }    
+    }      
 
     async hashBlockAddup(transactionId) {
         try {
@@ -353,44 +327,7 @@ class MainClass {
             console.error("Error at hashBlockAddup():", error);
             return null;
         }
-    }
-
-    async calculateNumber(heBlock, heTransactionId, hash) {
-        try {
-            console.log("heBlock:", heBlock);
-            console.log("heTransactionId:", heTransactionId);
-            console.log("hash:", hash);
-            // Combine the block number, transaction ID, and hash into a single string
-            const combined = `${heTransactionId}${hash}`;
-            
-            // Map each character in the string to a digit or letter value
-            const digits = combined.split('').map(char => {
-                if (/[a-zA-Z]/.test(char)) {
-                    // Convert letters to their corresponding number (a=1, b=2, ..., z=26)
-                    return char.toLowerCase().charCodeAt(0) - 96;
-                } else if (/[0-9]/.test(char)) {
-                    // Convert digits to integers directly
-                    return parseInt(char, 10);
-                } else {
-                    // Ignore non-alphanumeric characters
-                    return 0;
-                }
-            });
-    
-            // Filter out any invalid or zero values
-            const validDigits = digits.filter(digit => digit > 0);
-    
-            // Sum up all valid digit values
-            const sum = validDigits.reduce((acc, digit) => acc + digit, 0);
-            console.log("Sum of Digits:", sum);
-    
-            // Return the final number as sum % 10
-            return sum % 10;
-        } catch (error) {
-            console.error("Error at calculateNumber():", error);
-            return null;
-        }
-    }    
+    }        
 
     async checkMemo(memoDetails) {
         let memoJson = {};

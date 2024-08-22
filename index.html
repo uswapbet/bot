@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Token Bets</title>
+    <link rel="icon" href="./assests/hiveupme.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap">
     <link rel="stylesheet" href="css/main.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -11,7 +12,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="./js/ApiChecker.js"></script>
+    <script src="./js/TokenFetcher.js"></script>
     <script src="./js/AccountChecker.js"></script>
+    <script src="./js/CalculateNumber.js"></script>
+    <script src="./js/MessageViewer.js"></script>
+    <script src="./js/Popup.js"></script>
     <script src="./js/Main.js"></script>    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -143,8 +148,45 @@
                         </g>
                     </svg>
                 </button>
+            </div>
+            <!-- Separator line -->
+            <hr class="balance-separator">
+            <!-- Trigger button for the pop-up -->
+            <div class="balance-row">                
+                <button id="open-popup-btn">Open Pop-Up</button>
+            </div>             
+        </div>           
+    </div>    
+
+    <!-- Pop-Up Panel -->
+    <div id="popup-panel" class="popup-panel">
+        <div class="popup-content">
+            <span id="close-popup" class="close-popup">&times;</span>
+            <h3>Draw Checker</h3>
+            <div class="popup-form-group">
+                <label for="input-block-id">Block Number</label>
+                <input type="text" id="input-block-id" readonly>
+            </div>
+            <div class="popup-form-group">
+                <label for="input-transaction-id">Transaction Id</label>
+                <input type="text" id="input-transaction-id">
+            </div>
+            <div class="popup-form-group">
+                <label for="input-hash-id">Hash</label>
+                <input type="text" id="input-hash-id" readonly>
+            </div>
+            <div class="popup-form-group">
+                <label for="input-draw-number">Draw Number</label>
+                <input type="text" id="input-draw-number" readonly>
+            </div>
+            <div class="popup-form-group">
+                <p id="popup-process-info">Please check your transaction id & try again...</p>
+            </div>
+            <div class="popup-buttons">
+                <button id="check-draw-btn">Check Draw</button>
+                <button id="clear-inputs-btn">Clear</button>
             </div>            
-        </div>    
+        </div>
     </div>
 </body>
 </html>

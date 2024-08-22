@@ -241,6 +241,55 @@ form {
 /* Existing styles remain the same */
 
 /* Mobile Styles */
+@media (max-width: 548px) {
+    .container {
+        flex-direction: column;
+        width: 95%;
+        height: 90%;
+        padding-top: 20px;
+    }
+
+    .form-container {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .balance-panel {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .form-group select,
+    .form-group input[type="text"],
+    .form-group button,
+    .inline-item input[type="text"],
+    .inline-item select,
+    .high-btn,
+    .low-btn {
+        width: 100%;
+        font-size: medium;
+    }
+
+    #token-balance-group {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .token-text {
+        width: 70% !important; /* Adjusted width for the text input */
+        margin-right: 5px;
+    }
+
+    .refresh-btn {
+        width: 25% !important; /* Adjusted width for the refresh button */
+    }
+}
+
+/* Mobile Styles */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -337,51 +386,99 @@ form {
     }
 }
 
-/* Mobile Styles */
-@media (max-width: 548px) {
-    .container {
-        flex-direction: column;
-        width: 95%;
-        height: 90%;
-        padding-top: 20px;
-    }
+/* Pop-Up Panel Styles */
+.popup-panel {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1000; /* On top of other content */
+}
 
-    .form-container {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        margin-top: 10px;
-    }
+.popup-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
 
-    .balance-panel {
-        width: 100%;
-        border-radius: 8px;
-    }
+.close-popup {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    .form-group select,
-    .form-group input[type="text"],
-    .form-group button,
-    .inline-item input[type="text"],
-    .inline-item select,
-    .high-btn,
-    .low-btn {
-        width: 100%;
-        font-size: medium;
-    }
+.close-popup:hover,
+.close-popup:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
-    #token-balance-group {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
+.popup-form-group {
+    margin-bottom: 15px;
+}
 
-    .token-text {
-        width: 70% !important; /* Adjusted width for the text input */
-        margin-right: 5px;
-    }
+.popup-form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
 
-    .refresh-btn {
-        width: 25% !important; /* Adjusted width for the refresh button */
-    }
+.popup-form-group input {
+    width: calc(100% - 20px);
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.popup-buttons button {
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+
+#check-draw-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+#clear-inputs-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.balance-separator {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+}
+
+#popup-process-info {
+    height: auto; /* Allow the height to adjust based on content */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease-in-out;
+    color: rgb(3, 184, 48);
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    margin-top: 10px; /* Add some margin if needed */
 }
