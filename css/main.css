@@ -55,8 +55,7 @@ form {
 .inline-item input[type="text"],
 .inline-item select,
 .high-btn,
-.low-btn,
-.refresh-btn {
+.low-btn {
     height: 35px; /* Consistent height for text boxes, dropdowns, and buttons */
     padding: 5px;
     font-size: 13px;
@@ -71,7 +70,11 @@ form {
     cursor: not-allowed;
 }
 
-.buttons-group,
+.form-group button:active {
+    background-color:#0084ff;
+    transition: background-color 0.3s ease;
+}
+
 .bet-buttons {
     display: flex;
     justify-content: space-between;
@@ -96,9 +99,41 @@ form {
 }
 
 .high-btn:hover,
-.low-btn:hover,
-.refresh-btn:hover {
+.low-btn:hover {
     opacity: 0.9;
+}
+
+#token-balance-group {
+    display: flex;
+    justify-content: flex-start; /* Align items to the start */
+    align-items: center;
+}
+
+.token-text {
+    margin-right: 5px; /* Small margin between the input and button */
+}
+
+/* Default style for refresh-btn */
+.refresh-btn {
+    width: 15% !important; /* Maintain width for the refresh button */
+    margin-left: 5px; /* Space on the left */
+    border: none; /* Remove border */
+    background-color: transparent; /* Default background color */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for color change */
+    padding: 0; /* Remove padding */
+}
+
+/* Default style for acc-refresh-btn */
+.acc-refresh-btn {
+    width: 15px; /* Adjust size as needed */
+    height: 15px; /* Adjust size as needed */
+    fill: #0084ff;
+}
+
+/* Optional: Style for hover state */
+.refresh-btn:hover {
+    background-color: #f0f0f0; /* Change background color on hover */
 }
 
 .bet-option {
@@ -135,17 +170,6 @@ form {
     margin-right: 10px;
     font-weight: 600;
     font-size: 13px;
-}
-
-.token-text {
-    width: 65%;
-}
-
-.refresh-btn {
-    margin: 0;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
 }
 
 #bet-process-info {
@@ -189,16 +213,175 @@ form {
 
 #refresh-bet-account-balance {
     background-color: transparent;
+    width: 25px; /* Ensure the button width is consistent */
+    height: 25px; /* Ensure the button height is consistent */
     border: none;
     cursor: pointer;
     padding: 0; /* Remove padding for better alignment */
     margin-left: 10px; /* Add space between the balance and the button */
     display: inline-flex;
     align-items: center; /* Center the SVG icon vertically */
+    justify-content: center; /* Center the SVG icon horizontally */
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease; /* Smooth transition for color change */
+    border: 1px solid #ccc; /* Add border to make it look like a button */
+}
+
+#refresh-bet-account-balance:active {
+    background-color: #0084ff;
 }
 
 .bal-refresh-btn {
     width: 15px; /* Adjust size as needed */
     height: 15px; /* Adjust size as needed */
     fill: #0084ff;
+}
+
+/* Existing styles remain the same */
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        width: 90%;
+        height: 90%;
+        padding-top: 20px;
+    }
+
+    .form-container {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .balance-panel {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .form-group select,
+    .form-group input[type="text"],
+    .form-group button,
+    .inline-item input[type="text"],
+    .inline-item select,
+    .high-btn,
+    .low-btn {
+        width: 100%;
+    }
+
+    #token-balance-group {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .token-text {
+        width: 70% !important; /* Adjusted width for the text input */
+        margin-right: 5px;
+    }
+
+    .refresh-btn {
+        width: 25% !important; /* Adjusted width for the refresh button */
+    }
+}
+
+
+/* Mobile Styles */
+@media (max-width: 1280px) {
+    .container {
+        flex-direction: column;
+        width: 80%;
+        height: 95%;
+        padding-top: 20px;
+    }
+
+    .form-container {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .balance-panel {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .form-group select,
+    .form-group input[type="text"],
+    .form-group button,
+    .inline-item input[type="text"],
+    .inline-item select,
+    .high-btn,
+    .low-btn {
+        width: 100%;
+    }
+
+    #token-balance-group {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .token-text {
+        width: 70% !important; /* Adjusted width for the text input */
+        margin-right: 5px;
+    }
+
+    .refresh-btn {
+        width: 25% !important; /* Adjusted width for the refresh button */
+    }
+}
+
+/* Mobile Styles */
+@media (max-width: 548px) {
+    .container {
+        flex-direction: column;
+        width: 95%;
+        height: 90%;
+        padding-top: 20px;
+    }
+
+    .form-container {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .balance-panel {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .form-group select,
+    .form-group input[type="text"],
+    .form-group button,
+    .inline-item input[type="text"],
+    .inline-item select,
+    .high-btn,
+    .low-btn {
+        width: 100%;
+        font-size: medium;
+    }
+
+    #token-balance-group {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .token-text {
+        width: 70% !important; /* Adjusted width for the text input */
+        margin-right: 5px;
+    }
+
+    .refresh-btn {
+        width: 25% !important; /* Adjusted width for the refresh button */
+    }
 }
