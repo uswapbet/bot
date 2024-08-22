@@ -270,6 +270,7 @@ class MainClass {
                                 let betMemo = await this.checkMemo(memo);
                                 if (Object.keys(betMemo).length > 0 && betMemo.bet_status !== null && betMemo.bet_status !== undefined) {
                                     let betStatus = await this.statusProcessor(calcNumber, betMemo.bet_status);
+                                    console.log("betStatus:", betStatus);
                                     const betStatusEl = document.getElementById('bet-status');
                                     betStatusEl.value = betStatus ? 'Win' : 'Loss';
 
