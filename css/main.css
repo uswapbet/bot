@@ -21,8 +21,11 @@ body {
 
 .form-container, .balance-panel {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
@@ -518,13 +521,13 @@ form {
 .title-logo-group {
     display: flex;
     align-items: center;
-    margin-bottom: 10px; /* Space between title and form */
-    justify-content: center; /* Centers the title and logo */
-}
+    margin-bottom: 0px; /* Space between title and form */
+    justify-content: center; /* Centers the title and logo */    
+} 
 
 .logo-image {
-    width: 40px;
-    height: 40px;
+    width: 5%;
+    height: auto;
     margin-right: 10px; /* Space between logo and title */
 }
 
