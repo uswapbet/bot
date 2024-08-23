@@ -176,7 +176,7 @@ form {
 }
 
 #bet-process-info {
-    height: 15px;
+    height: auto;
     opacity: 0;
     visibility: hidden;
     transition: opacity 1s ease-in-out;
@@ -184,6 +184,10 @@ form {
     display: flex;
     align-items: center;
     font-size: 13px;
+}
+
+.message-params {
+    height: 15px !important;
 }
 
 /* Special case for Transaction ID and Hash ID to take 100% width */
