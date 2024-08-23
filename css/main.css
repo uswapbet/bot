@@ -173,7 +173,7 @@ form {
 }
 
 #bet-process-info {
-    height: 0px;
+    height: 15px;
     opacity: 0;
     visibility: hidden;
     transition: opacity 1s ease-in-out;
