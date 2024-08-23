@@ -113,11 +113,11 @@ class Popup {
                         await this.popUpErrorInfo(errMsg);
                     }
                 } else {
-                    let errMsg = "Encounter an hive-engine error, please try again...";
+                    let errMsg = "Encounter an error, please try again...";
                     await this.popUpErrorInfo(errMsg);
                 }
             } else {
-                let errMsg = "Encounter an hive-engine error, please try again...";
+                let errMsg = "Encounter an error, please try again...";
                 await this.popUpErrorInfo(errMsg);
             }
 
