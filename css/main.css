@@ -84,7 +84,7 @@ form {
 
 .high-btn,
 .low-btn {
-    color: white;
+    color: #ffffff;
     width: 70%;
     border: none;
     cursor: pointer;
@@ -177,7 +177,7 @@ form {
     opacity: 0;
     visibility: hidden;
     transition: opacity 1s ease-in-out;
-    color: rgb(3, 184, 48);
+    color: #03b830;
     display: flex;
     align-items: center;
     font-size: 13px;
@@ -388,7 +388,6 @@ form {
 
 /* Pop-Up Panel Styles */
 .popup-panel {
-    display: none; /* Hidden by default */
     position: fixed;
     top: 0;
     left: 0;
@@ -396,6 +395,9 @@ form {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     z-index: 1000; /* On top of other content */
+    opacity: 0; /* Start with opacity 0 */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth opacity and visibility transition */
 }
 
 .popup-content {
@@ -407,6 +409,8 @@ form {
     max-width: 400px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-50px); /* Start with slight upward translation */
+    transition: transform 0.3s ease; /* Smooth slide down transition */
 }
 
 .close-popup {
@@ -453,16 +457,15 @@ form {
     cursor: pointer;
     border: none;
     border-radius: 4px;
+    color: white; /* Common color for both buttons */
 }
 
 #check-draw-btn {
     background-color: #28a745;
-    color: white;
 }
 
 #clear-inputs-btn {
     background-color: #dc3545;
-    color: white;
 }
 
 .balance-separator {
@@ -475,10 +478,38 @@ form {
     height: auto; /* Allow the height to adjust based on content */
     opacity: 0;
     visibility: hidden;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
     color: rgb(3, 184, 48);
     display: flex;
     align-items: center;
     font-size: 13px;
     margin-top: 10px; /* Add some margin if needed */
+}
+
+/* Visible state with smooth transition */
+.show-popup {
+    opacity: 1;
+    visibility: visible;
+}
+
+.show-popup .popup-content {
+    transform: translateY(0); /* Slide into place */
+}
+
+#open-popup-btn {
+    background-color: #0099ff;
+    width: 70%;
+    color: #ffffff;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+}
+
+#open-popup-btn:hover {
+    background-color: #038de9;
+    transition: background-color 0.3s ease;
+}
+
+#open-popup-btn:active {
+    background-color:#0084ff;
+    transition: background-color 0.3s ease;
 }
